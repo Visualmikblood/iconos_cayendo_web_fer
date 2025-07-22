@@ -1,0 +1,162 @@
+document.addEventListener("DOMContentLoaded", function () {
+  const cantidad = 60;
+
+  const imagenesMagicas = [
+    "https://www.elmagojoquer.com/wp-content/uploads/2025/05/sombrero_magico.png",
+    "https://www.elmagojoquer.com/wp-content/uploads/2025/05/varita-magica.png",
+    "https://www.elmagojoquer.com/wp-content/uploads/2025/05/reloj-de-mano.png",
+    "https://www.elmagojoquer.com/wp-content/uploads/2025/05/baraja-de-cartas.png"
+  ];
+
+  for (let i = 0; i < cantidad; i++) {
+    const img = document.createElement("img");
+    const randomIndex = Math.floor(Math.random() * imagenesMagicas.length);
+    img.src = imagenesMagicas[randomIndex];
+    img.className = "objeto-magico";
+
+    img.style.left = Math.random() * 100 + "vw";
+    img.style.animationDuration = (5 + Math.random() * 5).toFixed(2) + "s";
+    img.style.animationDelay = (Math.random() * 5).toFixed(2) + "s";
+
+    document.body.appendChild(img);
+  }
+});
+
+
+	
+	
+	
+	
+	/*
+	
+	document.addEventListener("click", function () {
+  const imagenesMagicas = [
+    "https://www.elmagojoquer.com/wp-content/uploads/2025/05/sombrero_magico.png",
+    "https://www.elmagojoquer.com/wp-content/uploads/2025/05/varita-magica.png",
+    "https://www.elmagojoquer.com/wp-content/uploads/2025/05/reloj-de-mano.png",
+    "https://www.elmagojoquer.com/wp-content/uploads/2025/05/baraja-de-cartas.png"
+  ];
+
+  const img = document.createElement("img");
+  const randomIndex = Math.floor(Math.random() * imagenesMagicas.length);
+  img.src = imagenesMagicas[randomIndex];
+  img.className = "objeto-magico";
+
+  img.style.left = Math.random() * 100 + "vw";
+  img.style.animationDuration = (5 + Math.random() * 5).toFixed(2) + "s";
+
+  document.body.appendChild(img);
+});
+
+	*/
+	
+
+document.addEventListener("DOMContentLoaded", function () {
+  // Asigna el ID "portada" al elemento que deseas identificar como tu portada.
+  // Asegúrate de que el selector '[data-id="3dd9e5a"]' coincide con el ID de tu sección de portada en WordPress.
+  const portadaElemento = document.querySelector('[data-id="3dd9e5a"]');
+  if (portadaElemento) {
+    portadaElemento.id = "portada";
+  }
+
+  // Rutas de las imágenes que se usarán como iconos.
+  const imagenesMagicas = [
+    "https://www.elmagojoquer.com/wp-content/uploads/2025/05/sombrero_magico.png",
+    "https://www.elmagojoquer.com/wp-content/uploads/2025/05/varita-magica.png",
+    "https://www.elmagojoquer.com/wp-content/uploads/2025/05/reloj-de-mano.png",
+    "https://www.elmagojoquer.com/wp-content/uploads/2025/05/baraja-de-cartas.png"
+  ];
+  const cantidad = 40; //Antes era 20.... Número de iconos que aparecerán cayendo por defecto. 
+  let portadaVisible = false; // Variable para controlar si la portada está actualmente en la vista.
+
+  /**
+   * Verifica si el elemento de la portada está visible en al menos un 50% de su altura.
+   * @returns {boolean} True si la portada está visible, False en caso contrario.
+   */
+  function estaEnPortada() {
+    const portada = document.getElementById("portada");
+    if (!portada) return false; // Si no encuentra el elemento con ID "portada", asume que no está en ella.
+
+    const rect = portada.getBoundingClientRect();
+    const windowHeight = window.innerHeight || document.documentElement.clientHeight;
+
+    // Calcula la altura visible de la portada.
+    const visibleAltura = Math.min(rect.bottom, windowHeight) - Math.max(rect.top, 0);
+    // Calcula el porcentaje de la portada que está visible.
+    const porcentajeVisible = visibleAltura / rect.height;
+
+    // Retorna true si más del 50% de la portada está visible.
+    return porcentajeVisible > 0.5;
+  }
+
+  /**
+   * Elimina todos los iconos de sombrero-magico y objeto-magico del DOM.
+   */
+  function limpiarIconos() {
+    document.querySelectorAll(".sombrero-magico").forEach(el => el.remove());
+    document.querySelectorAll(".objeto-magico").forEach(el => el.remove());
+  }
+
+  /**
+   * Crea y añade un único icono mágico al cuerpo del documento.
+   * Asigna clases y estilos para la animación de caída en zigzag.
+   */
+  function crearIconoMagico() {
+    const img = document.createElement("img");
+    const randomIndex = Math.floor(Math.random() * imagenesMagicas.length);
+    img.src = imagenesMagicas[randomIndex]; // Asigna una imagen aleatoria.
+    img.className = "sombrero-magico"; // Clase CSS para la animación.
+    img.style.left = Math.random() * 100 + "vw"; // Posición horizontal aleatoria.
+    img.style.animationDuration = (5 + Math.random() * 5).toFixed(2) + "s"; // Duración aleatoria de la animación.
+    img.style.animationDelay = (Math.random() * 5).toFixed(2) + "s"; // Retraso aleatorio para que no caigan todos a la vez.
+    document.body.appendChild(img); // Añade el icono al body.
+  }
+
+  /**
+   * Inicia la creación de todos los iconos desde cero.
+   * Primero limpia los iconos existentes para un efecto de "reinicio".
+   */
+  function iniciarIconos() {
+    limpiarIconos(); // Asegura que no haya iconos antiguos antes de crear nuevos.
+    for (let i = 0; i < cantidad; i++) {
+      crearIconoMagico(); // Crea el número especificado de iconos.
+    }
+  }
+
+  // Evento de clic en el documento para crear iconos adicionales.
+  document.addEventListener("click", function (e) {
+    if (!portadaVisible) return; // Solo permite crear iconos con clic si la portada está visible.
+
+    const img = document.createElement("img");
+    const randomIndex = Math.floor(Math.random() * imagenesMagicas.length);
+    img.src = imagenesMagicas[randomIndex];
+    img.className = "objeto-magico"; // Clase CSS para los iconos de clic.
+    img.style.left = e.clientX + "px"; // Posición horizontal donde se hizo clic.
+    img.style.top = e.clientY + "px"; // Posición vertical donde se hizo clic.
+    img.style.animationDuration = (5 + Math.random() * 5).toFixed(2) + "s"; // Duración aleatoria.
+    document.body.appendChild(img);
+  });
+
+  /**
+   * Maneja el estado de los iconos basándose en la visibilidad de la portada.
+   * Se activa con el evento de scroll.
+   */
+  function manejarScroll() {
+    const estaActualmenteEnPortada = estaEnPortada();
+
+    if (estaActualmenteEnPortada && !portadaVisible) {
+      // Si el usuario entra en la portada (antes no estaba visible y ahora sí).
+      portadaVisible = true; // Actualiza el estado.
+      iniciarIconos(); // Inicia los iconos desde cero.
+    } else if (!estaActualmenteEnPortada && portadaVisible) {
+      // Si el usuario sale de la portada (estaba visible y ahora no).
+      portadaVisible = false; // Actualiza el estado.
+      limpiarIconos(); // Elimina todos los iconos.
+    }
+  }
+
+  // Ejecuta la función al cargar la página para establecer el estado inicial de los iconos.
+  manejarScroll();
+  // Añade un 'event listener' para detectar el scroll de la ventana y manejar los iconos.
+  window.addEventListener("scroll", manejarScroll);
+});
